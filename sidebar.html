@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <base target="_top">
+    <link rel="stylesheet" href="https://ssl.gstatic.com/docs/script/css/add-ons1.css">
+    <!-- The CSS package above applies Google styling to buttons and other elements. -->
+
+    <style>
+        .branding-below {
+            bottom: 56px;
+            top: 0;
+        }
+
+        .branding-text {
+            left: 7px;
+            position: relative;
+            top: 3px;
+        }
+
+        .col-contain {
+            overflow: hidden;
+        }
+
+        .col-one {
+            float: left;
+            width: 50%;
+        }
+
+        .logo {
+            vertical-align: middle;
+        }
+
+        .radio-spacer {
+            height: 20px;
+        }
+
+        .width-100 {
+            width: 100%;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="sidebar branding-below">
+        <div id="button-bar" hidden=true>
+            <button class="blue" id="insert-screenshot">Cattura schermata</button>
+        </div>
+        <div id="loading" hidden="true">
+            Caricamento in corso...
+        </div>
+        <div class="error" id="server-error" hidden="true">
+            Nessuna lezione trovata.
+            <button id="retry">Riprova</button>
+        </div>
+        <div class="error" id="screenshot-error" hidden="true">
+            Impossibile inserire l'immagine.
+        </div>
+        <div class="error" id="timestamp-error" hidden="true">
+            Impossibile inserire il timestamp.
+        </div>
+    </div>
+
+    <div class="sidebar bottom">
+        <img alt="Add-on logo" class="logo" src="https://upload.wikimedia.org/wikipedia/it/thumb/e/e4/Sigillo_Universit%C3%A0_di_Trento.svg/1024px-Sigillo_Universit%C3%A0_di_Trento.svg.png" width="27" height="27">
+        <span class="gray branding-text">Cattura di schermate</span>
+    </div>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script>
+        /**
+         * Assegna degli handler ai pulsanti per quando vengono cliccati.
+         */
+        $(function() {
+            $(document).ready(init);
+            $('#insert-screenshot').click(insertScreenshotAndTimestamp);
+            $('#retry').click(init);
+        });
+
+        /**
+         * Accede al sistema LODE e ottiene, se esiste, la lezione in corso.
+         */
+        function init() {
+            var buttonBar = document.getElementById('button-bar');
+            var serverError = document.getElementById('server-error');
+
+            serverError.hidden = true;
+
+            google.script.run
+                .withSuccessHandler(function() {
+                    buttonBar.hidden = false;
+                })
+                .withFailureHandler(function() {
+                    buttonBar.hidden = true;
+                    serverError.hidden = false;
+                })
+                .init();
+        }
+
+        /**
+         * Richiede la schermata corrente al dispositivo di cattura e la inserisce come sfondo
+         * della diapositiva corrente; inserisce il timestamp.
+         */
+        function insertScreenshotAndTimestamp() {
+            var loading = document.getElementById('loading');
+            var screenshotError = document.getElementById('screenshot-error');
+            var timestampError = document.getElementById('timestamp-error');
+
+            loading.hidden = false;
+            screenshotError.hidden = true;
+            timestampError.hidden = true;
+
+            google.script.run
+                .withSuccessHandler(function() {
+                    loading.hidden = true;
+                })
+                .withFailureHandler(function() {
+                    loading.hidden = true;
+                    screenshotError.hidden = false;
+                })
+                .insertScreenshotAndTimestamp();
+        }
+
+        /**
+         * Inserisce un div che contiene un messaggio di errore dopo un determinato elemento.
+         *
+         * @param {string} msg Il messaggio di errore da mostrare.
+         * @param {DOMElement} element L'elemento dopo il quale mostrare l'errore.
+         */
+        function showError(msg, element) {
+            var div = $('<div id="error" class="error">' + msg + '</div>');
+            $(element).after(div);
+        }
+
+    </script>
+</body>
+
+</html>

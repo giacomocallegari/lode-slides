@@ -1,0 +1,19 @@
+{
+  "name": "lode-slides",
+  "version": "1.0.0",
+  "description": "Google Slides add-on for LODE",
+  "main": "code.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/giacomocallegari/lode-slides.git"
+  },
+  "author": "giacomo.callegari@studenti.unitn.it",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/giacomocallegari/lode-slides/issues"
+  },
+  "homepage": "https://github.com/giacomocallegari/lode-slides#readme"
+}
