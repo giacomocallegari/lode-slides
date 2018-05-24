@@ -46,19 +46,22 @@
     <div class="sidebar branding-below">
         <div id="button-bar" hidden=true>
             <button class="blue" id="insert-screenshot">Cattura schermata</button>
+            <button id="insert-timestamp">Cattura timestamp</button>
         </div>
         <div id="loading" hidden="true">
-            Caricamento in corso...
+            <div class="block">Caricamento in corso...</div>
         </div>
         <div class="error" id="server-error" hidden="true">
-            Nessuna lezione trovata.
-            <button id="retry">Riprova</button>
+            <div class="block">Nessuna lezione trovata.</div>
+            <div class="block">
+                <button id="retry">Riprova</button>
+            </div>
         </div>
         <div class="error" id="screenshot-error" hidden="true">
-            Impossibile inserire l'immagine.
+            <div class="block">Impossibile inserire l'immagine.</div>
         </div>
         <div class="error" id="timestamp-error" hidden="true">
-            Impossibile inserire il timestamp.
+            <div class="block">Impossibile inserire il timestamp.</div>
         </div>
     </div>
 
@@ -75,6 +78,7 @@
         $(function() {
             $(document).ready(init);
             $('#insert-screenshot').click(insertScreenshotAndTimestamp);
+            $('#insert-timestamp').click(insertTimestamp);
             $('#retry').click(init);
         });
 
@@ -120,6 +124,30 @@
                     screenshotError.hidden = false;
                 })
                 .insertScreenshotAndTimestamp();
+        }
+
+        /**
+         * Richiede il timestamp corrente al dispositivo di cattura e lo inserisce nel documento
+         * nella posizione del cursore.
+         */
+        function insertTimestamp() {
+            var loading = document.getElementById('loading');
+            var screenshotError = document.getElementById('screenshot-error');
+            var timestampError = document.getElementById('timestamp-error');
+
+            loading.hidden = false;
+            screenshotError.hidden = true;
+            timestampError.hidden = true;
+
+            google.script.run
+                .withSuccessHandler(function() {
+                    loading.hidden = true;
+                })
+                .withFailureHandler(function() {
+                    loading.hidden = true;
+                    timestampError.hidden = false;
+                })
+                .insertTimestamp();
         }
 
         /**

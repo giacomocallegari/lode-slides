@@ -8,7 +8,8 @@
 /**
  * Parametri di configurazione
  */
-var PATH = 'http://95.252.6.86:8080';
+//var PATH = 'http://lode.disi.unitn.it';
+var PATH = 'http://79.41.106.69:8080';
 var REC_URL = 'http://some.url.com/recording?time=';
 var EMAIL = 'giacomo.callegari@studenti.unitn.it';
 var PASSWORD = 'ciao1234';
@@ -188,13 +189,13 @@ function getTimestamp() {
  * Inserisce la schermata come sfondo di una nuova diapositiva e inserisce il timestamp.
  */
 function insertScreenshotAndTimestamp() {
-    console.log('Insert screenshot');
+    console.log('Insert screenshot and timestamp');
 
     // Richiedo la schermata e il timestamp.
     var screenshot = getScreenshot();
     var timestamp = getTimestamp();
 
-    // Individuo la diapositiva corrente.
+    // Inserisco una nuova diapositiva e la seleziono.
     var preso = SlidesApp.getActivePresentation();
     var newSlide = preso.appendSlide();
     newSlide.selectAsCurrentPage();
@@ -205,10 +206,34 @@ function insertScreenshotAndTimestamp() {
     var captionText = cell.getText();
 
     // Inserisco il timestamp.
-    captionText.setText('📹');
+    captionText.setText('📽');
     captionText.getTextStyle().setLinkUrl(timestamp);
 
     // Inserisco l'immagine come sfondo della diapositiva.
     var background = newSlide.getBackground();
     background.setPictureFill(screenshot);
+}
+
+/**
+ * Inserisce il timestamp nel documento.
+ */
+function insertTimestamp() {
+    console.log('Insert timestamp');
+    
+    // Richiedo il timestamp.
+    var timestamp = getTimestamp();
+    
+    // Inserisco una nuova diapositiva e la seleziono.
+    var preso = SlidesApp.getActivePresentation();
+    var newSlide = preso.appendSlide();
+    newSlide.selectAsCurrentPage();
+
+    // Creo la casella di testo per il timestamp.
+    var table = newSlide.insertTable(1, 1, 10, 10, 20, 20);
+    var cell = table.getCell(0, 0);
+    var captionText = cell.getText();
+
+    // Inserisco il timestamp.
+    captionText.setText('📽');
+    captionText.getTextStyle().setLinkUrl(timestamp);
 }
