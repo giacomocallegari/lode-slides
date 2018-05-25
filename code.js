@@ -201,13 +201,13 @@ function insertScreenshotAndTimestamp() {
     newSlide.selectAsCurrentPage();
 
     // Creo la casella di testo per il timestamp.
-    var table = newSlide.insertTable(1, 1, 10, 10, 20, 20);
-    var cell = table.getCell(0, 0);
-    var captionText = cell.getText();
-
-    // Inserisco il timestamp.
-    captionText.setText('📽');
-    captionText.getTextStyle().setLinkUrl(timestamp);
+    var textBox = newSlide.insertShape(SlidesApp.ShapeType.TEXT_BOX);
+    var captionText = textBox.getText();
+    textBox.setContentAlignment(SlidesApp.ContentAlignment.MIDDLE);
+    
+    //Inserisco il timestamp.
+    captionText.setText('▶');
+    captionText.getTextStyle().setLinkUrl(timestamp).setUnderline(false);
 
     // Inserisco l'immagine come sfondo della diapositiva.
     var background = newSlide.getBackground();
@@ -222,18 +222,18 @@ function insertTimestamp() {
     
     // Richiedo il timestamp.
     var timestamp = getTimestamp();
-    
+
     // Inserisco una nuova diapositiva e la seleziono.
     var preso = SlidesApp.getActivePresentation();
     var newSlide = preso.appendSlide();
     newSlide.selectAsCurrentPage();
 
     // Creo la casella di testo per il timestamp.
-    var table = newSlide.insertTable(1, 1, 10, 10, 20, 20);
-    var cell = table.getCell(0, 0);
-    var captionText = cell.getText();
-
-    // Inserisco il timestamp.
-    captionText.setText('📽');
-    captionText.getTextStyle().setLinkUrl(timestamp);
+    var textBox = newSlide.insertShape(SlidesApp.ShapeType.TEXT_BOX);
+    var captionText = textBox.getText();
+    textBox.setContentAlignment(SlidesApp.ContentAlignment.MIDDLE);
+    
+    //Inserisco il timestamp.
+    captionText.setText('▶');
+    captionText.getTextStyle().setLinkUrl(timestamp).setUnderline(false);
 }
